@@ -1,0 +1,24 @@
+# Name your workflow
+name: First Workflow
+# Add your trigger
+# This trigger or event workflow_dispatch to manually start your workflow
+on: workflow_dispatch 
+# Add your jobs key
+jobs:
+# Name your Job
+  basic:
+    # Define the runner where your job will be running
+    runs-on: ubuntu-latest
+    # Now define your steps
+    steps: 
+    # Name your Step
+      - name: Print greeting
+        run: echo "Hello Moe"
+  # Name your Next Step
+     - name: Print Goodbye
+       run: echo "Cheers Mates!!!!"
+
+        
+    
+  
+  
