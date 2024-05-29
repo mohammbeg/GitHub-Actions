@@ -15,8 +15,8 @@ jobs:
       - name: Print greeting
         run: echo "Hello Moe"
   # Name your Next Step
-     - name: Print Goodbye
-       run: echo "Cheers Mates!!!!"
+      - name: Print Goodbye
+        run: echo "Cheers Mates!!!!"
 
         
     
