@@ -14,9 +14,16 @@ jobs:
     # Name your Step
       - name: Print greeting
         run: echo "Hello Moe"
-  # Name your Next Step
+    # Name your Next Step
       - name: Print Goodbye
         run: echo "Cheers Mates!!!!"
+  basictwo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print basictwo details
+        run: echo "This is Job two"
+      - name: Print Goodbye basictwo
+        run: echo "Cheers basics Mates!!!!"    
 
         
     
