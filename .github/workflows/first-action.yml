@@ -16,7 +16,9 @@ jobs:
         run: echo "Hello Moe"
     # Name your Next Step
       - name: Print Goodbye
-        run: echo "Cheers Mates!!!!"
+        run: |
+          echo "Cheers Mates!!!!"
+          echo "Added a pipe command to run multiple shell commands!!!!"
   basictwo:
     runs-on: ubuntu-latest
     steps:
