@@ -16,7 +16,7 @@ jobs:
         run: echo "Hello Moe"
     # Name your Next Step
       - name: Print Goodbye
-        run: |
+        run: |  # Add a pipe command to run multiple shell commands
           echo "Cheers Mates!!!!"
           echo "Added a pipe command to run multiple shell commands!!!!"
   basictwo:
