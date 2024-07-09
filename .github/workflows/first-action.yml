@@ -1,33 +1,70 @@
-# Name your workflow
-name: First Workflow
-# Add your trigger
-# This trigger or event workflow_dispatch to manually start your workflow
-on: workflow_dispatch 
-# Add your jobs key
-jobs:
-# Name your Job
-  basic:
-    # Define the runner where your job will be running
-    runs-on: ubuntu-latest
-    # Now define your steps
-    steps: 
-    # Name your Step
-      - name: Print greeting
-        run: echo "Hello Moe"
-    # Name your Next Step
-      - name: Print Goodbye
-        run: |  # Add a pipe command to run multiple shell commands
-          echo "Cheers Mates!!!!"
-          echo "Added a pipe command to run multiple shell commands!!!!"
-  basictwo:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print basictwo details
-        run: echo "This is Job two"
-      - name: Print Goodbye basictwo
-        run: echo "Cheers basics Mates!!!!"    
+name: Build AMI
 
-        
-    
-  
-  
+on:
+  workflow_dispatch:
+
+jobs:
+  build-ami:
+    runs-on: ubuntu-latest
+
+    env:
+      PACKER_VERSION: 1.6.5
+      ANSIBLE_VERSION: 2.9.20
+      # GIT_URL: https://github.com/amp-digital-ddc/infra-kubernetes.git
+      # SCRIPTS_URL: https://github.com/amp-digital-aem/scripts.git
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9.19'
+
+      # - name: Install AWS CLI
+      #   run: |
+      #     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      #     unzip awscliv2.zip
+      #     sudo ./aws/install
+
+      # - name: Install Packer
+      #   run: |
+      #     CURRENT_PACKER_VERSION=$(packer version | head -n 1 | cut -d' ' -f2)
+      #     if [ "$CURRENT_PACKER_VERSION" != "v${{ env.PACKER_VERSION }}" ]; then
+      #       echo "Downloading packer v${{ env.PACKER_VERSION }}"
+      #       wget https://releases.hashicorp.com/packer/${{ env.PACKER_VERSION }}/packer_${{ env.PACKER_VERSION }}_linux_amd64.zip -O packer.zip
+      #       unzip -o packer.zip
+      #       sudo mv packer /usr/local/bin/
+      #     fi
+
+      # - name: Setup Ansible
+      #   run: |
+      #     python -m venv ansible-env
+      #     source ansible-env/bin/activate
+      #     pip install cffi==1.15.1 pycparser==2.18 idna==2.7
+      #     pip install ansible==${{ env.ANSIBLE_VERSION }}
+
+      # - name: List AMIs
+      #   id: list_amis
+      #   run: |
+      #     amis=$(aws --region ap-southeast-2 ec2 describe-images --filters Name=name,Values=encrypted-cloud2-rhel9* Name=state,Values=available --output text --query 'Images[*].[ImageId,Name,CreationDate]' | sort -k3 | awk '{print $1, $2}' | tac)
+      #     echo "amis=${amis}" >> $GITHUB_ENV
+
+      # - name: Checkout infra-kubernetes repo
+      #   uses: actions/checkout@v2
+      #   with:
+      #     repository: amp-digital-ddc/infra-kubernetes
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     path: infra-kubernetes
+
+      # - name: Build AMI
+      #   run: |
+      #     source ansible-env/bin/activate
+      #     cd infra-kubernetes/bake_rhel9
+      #     git_commit=$(git rev-parse HEAD)
+      #     timestamp=$(date +%Y%m%d%H%M%S)
+      #     packer build -on-error=abort -var timestamp=${timestamp} -var source_ami=${{ secrets.Base_AMI }} -var git_commit=${git_commit} -var-file=../configuration.json packer/${{ env.PACKER_TEMPLATES }}.json
+      #   env:
+      #     Base_AMI: ${{ secrets.Base_AMI }}
+      #     PACKER_TEMPLATES: "template-name" # Set your packer template name here
